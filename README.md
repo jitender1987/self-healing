@@ -1,2 +1,3 @@
-# self-healing
-docker-compose files for setup
+# Self-Healing Infrastructure 
+
+Please clone git repo and deploy docker containers to setup Self-Healing Infra by using below commands.
