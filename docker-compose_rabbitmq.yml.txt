@@ -1,0 +1,12 @@
+version: '3'
+services:
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    hostname: "rabbit"
+    ports:
+      - "8080:15672"
+    restart: always
+networks:
+    default:
+        external:
+            name: isolated_nw

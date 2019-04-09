@@ -1,0 +1,26 @@
+version: '3.1'
+services:
+  web:
+    build: .
+    ports:
+      - 80:8080
+    depends_on:
+      - db
+    environment:
+      - DEBUG=1  # remove this line to turn DEBUG off
+      - AUTH_REQUIRED=False
+      - ADMIN_USERS=admin@alerta.io,devops@alerta.io
+      - ADMIN_KEY=demo-admin-key
+      - "COLORS={'severity': {'fatal': '#303030'}, 'text': 'white'}"
+      - "SEVERITY={'fatal': 0}"
+      - TRACKING_ID=UA-44644195-6
+      - PLUGINS=reject,blackout,normalise,enhance,amqp
+      - INSTALL_PLUGINS=normalise,enhance,amqp
+    restart: always
+  db:
+    image: mongo:3.4
+    restart: always
+networks:
+    default:
+        external:
+            name: isolated_nw
