@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   web:
-    build: .
+    image: alerta-web:latest
     ports:
       - 80:8080
     depends_on:
@@ -10,12 +10,15 @@ services:
       - DEBUG=1  # remove this line to turn DEBUG off
       - AUTH_REQUIRED=False
       - ADMIN_USERS=admin@alerta.io,devops@alerta.io
+      # - ADMIN_USERS=admin@alerta.io
+      # - ADMIN_PASSWORD=password
       - ADMIN_KEY=demo-admin-key
       - "COLORS={'severity': {'fatal': '#303030'}, 'text': 'white'}"
       - "SEVERITY={'fatal': 0}"
       - TRACKING_ID=UA-44644195-6
       - PLUGINS=reject,blackout,normalise,enhance,amqp
       - INSTALL_PLUGINS=normalise,enhance,amqp
+      - DATABASE_URL=mongodb://db:27017/monitoring
     restart: always
   db:
     image: mongo:3.4
