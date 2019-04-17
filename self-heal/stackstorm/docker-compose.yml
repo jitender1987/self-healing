@@ -17,8 +17,7 @@ services:
       - rabbitmq
       - redis
     networks:
-      - public
-      - private
+      - isolated_nw
     volumes:
       - stackstorm-packs-volume:/opt/stackstorm/packs
       - stackstorm-virtualenvs-volume:/opt/stackstorm/virtualenvs
@@ -29,6 +28,7 @@ services:
       - ./runtime/st2.d:/st2-docker/st2.d
       - ./conf/stackstorm.env:/st2-docker/env
     dns_search: .
+    restart: always
 
 ### External Services
 
@@ -37,35 +37,38 @@ services:
     env_file:
       - conf/mongo.env
     networks:
-      - private
+      - isolated_nw
     volumes:
       - mongo-volume:/data/db
       - mongo-configdb-volume:/data/configdb
     dns_search: .
+    restart: always
   rabbitmq:
     image: rabbitmq:3.6-management
     env_file:
       - conf/rabbitmq.env
     networks:
-      - private
+      - isolated_nw
     volumes:
       - rabbitmq-volume:/var/lib/rabbitmq
     dns_search: .
+    restart: always
   postgres:
     image: postgres:9.6
     env_file:
       - conf/postgres.env
     networks:
-      - private
+      - isolated_nw
     volumes:
       - postgres-volume:/var/lib/postgresql/data
     dns_search: .
+    restart: always
   redis:
     image: redis:4.0
     env_file:
       - conf/redis.env
     networks:
-      - private
+      - isolated_nw
     volumes:
       - redis-volume:/data
     dns_search: .
@@ -76,6 +79,7 @@ services:
        --requirepass "$$REDIS_PASSWORD"
       '
     ]
+    restart: always
 
 volumes:
   mongo-volume:
@@ -89,7 +93,5 @@ volumes:
   stackstorm-log-volume:
 
 networks:
-  public:
-    driver: bridge
-  private:
-    driver: bridge
+    isolated_nw:
+        external: true
