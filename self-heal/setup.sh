@@ -22,12 +22,13 @@ docker build . -t alerta-web:latest --build-arg VCS_REF=$VCS_REF --build-arg BUI
 
 #3. Running Alerta in same network in which RabbitMQ is running
 docker-compose up -d
+docker exec -it rabbitmq_rabbitmq_q_1 bash -c "sleep 0.5;rabbitmqadmin -u guest -p guest declare exchange name=alerta-msg type=fanout;rabbitmqadmin -u guest -p guest declare queue name=alerta-msg;rabbitmqadmin -u guest -p guest declare binding source=alerta-msg destination=alerta-msg"
 
 #4. Runnning stackstorm in same network and updating rabbitmq.yml file
 cd ../stackstorm
 make env
 docker-compose up -d
-docker exec -it stackstorm_stackstorm_1 bash -c "sleep 0.5;st2 pack install rabbitmq; if [ ! -f "/opt/stackstorm/configs/rabbitmq.yaml" ]; then
+docker exec -it stackstorm_stackstorm_1 bash -c "sleep 0.5;if [ ! -f "/opt/stackstorm/configs/rabbitmq.yaml" ]; then
   cat >"/opt/stackstorm/configs/rabbitmq.yaml" << EOF
 ---
 sensor_config:
@@ -39,4 +40,4 @@ sensor_config:
                      - 'alerta-msg'
               deserialization_method: 'json'
 EOF
-fi; sleep 100; st2ctl reload; sleep 10; st2ctl reload"
+fi;st2 pack install rabbitmq;sleep 100; st2ctl reload; sleep 10; st2ctl reload"
