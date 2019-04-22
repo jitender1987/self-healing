@@ -27,7 +27,7 @@ docker-compose up -d
 cd ../stackstorm
 make env
 docker-compose up -d
-docker exec -it stackstorm_stackstorm_1 bash -c "sleep 0.5; if [ ! -f "/opt/stackstorm/configs/rabbitmq.yaml" ]; then
+docker exec -it stackstorm_stackstorm_1 bash -c "sleep 0.5;st2 pack install rabbitmq; if [ ! -f "/opt/stackstorm/configs/rabbitmq.yaml" ]; then
   cat >"/opt/stackstorm/configs/rabbitmq.yaml" << EOF
 ---
 sensor_config:
