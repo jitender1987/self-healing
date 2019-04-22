@@ -9,6 +9,9 @@ services:
       - conf/rabbitmq.env
       - conf/postgres.env
       - conf/redis.env
+    environment:
+      - ST2_USER=st2admin
+      - ST2_PASSWORD=st2admin
     ports:
       - "443:443"
     depends_on:

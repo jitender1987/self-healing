@@ -31,12 +31,12 @@ docker exec -it stackstorm_stackstorm_1 bash -c "sleep 0.5;st2 pack install rabb
   cat >"/opt/stackstorm/configs/rabbitmq.yaml" << EOF
 ---
 sensor_config:
-	host: '"rabbitmq_q"'
-	username: '"guest"'
-	password: '"guest"'
-	rabbitmq_queue_sensor:
-		queues:
-			- '"alerta-msg"'
-		deserialization_method: '"json"'
+       host: 'rabbitmq_q'
+       username: 'guest'
+       password: 'guest'
+       rabbitmq_queue_sensor:
+              queues:
+                     - 'alerta-msg'
+              deserialization_method: 'json'
 EOF
 fi; sleep 100; st2ctl reload; sleep 10; st2ctl reload"
