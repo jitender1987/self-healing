@@ -12,7 +12,7 @@ fi
 if [ ! -f "${ALERTA_SVR_CONF_FILE}" ]; then
   cat >"${ALERTA_SVR_CONF_FILE}" << EOF
 SECRET_KEY = '$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -c 32)'
-AMQP_URL = 'amqp://guest:guest@rabbitmq_rabbitmq_q:5672'
+AMQP_URL = 'amqp://guest:guest@rabbitmq_rabbitmq_q_1:5672'
 AMQP_TOPIC = 'alerta-msg'
 EOF
 fi

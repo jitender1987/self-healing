@@ -23,16 +23,16 @@ docker exec -it rabbitmq_rabbitmq_q_1 bash -c "sleep 0.5;rabbitmqadmin -u guest 
 cd ../stackstorm
 make env
 docker-compose up -d
-docker exec -it stackstorm_stackstorm_1 bash -c "sleep 0.5;if [ ! -f "/opt/stackstorm/configs/rabbitmq.yaml" ]; then
+docker exec -it stackstorm_stackstorm_1 bash -c "sleep 10;if [ ! -f "/opt/stackstorm/configs/rabbitmq.yaml" ]; then
   cat >"/opt/stackstorm/configs/rabbitmq.yaml" << EOF
 ---
 sensor_config:
-       host: 'rabbitmq_q'
+       host: 'rabbitmq_rabbitmq_q_1'
        username: 'guest'
        password: 'guest'
        rabbitmq_queue_sensor:
-              queues:
-                     - 'alerta-msg'
-              deserialization_method: 'json'
+                queues:
+                       - 'alerta-msg'
+                deserialization_method: 'json'
 EOF
-fi;st2 pack install rabbitmq;sleep 100; st2ctl reload; sleep 10; st2ctl reload"
+fi;sleep 50;st2 pack install rabbitmq;sleep 100; st2ctl reload; sleep 10; st2ctl reload"
