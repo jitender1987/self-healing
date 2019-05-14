@@ -14,6 +14,9 @@ if [ ! -f "${ALERTA_SVR_CONF_FILE}" ]; then
 SECRET_KEY = '$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -c 32)'
 AMQP_URL = 'amqp://guest:guest@rabbitmq_rabbitmq_q_1:5672'
 AMQP_TOPIC = 'alerta-msg'
+PLUGINS = ['prometheus']
+ALERTMANAGER_API_URL = 'http://3.209.201.141:9093'
+ALERTMANAGER_SILENCE_DAYS = 1
 EOF
 fi
 
